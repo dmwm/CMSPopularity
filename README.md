@@ -22,4 +22,6 @@ In this project we'll follow the following
 ### Refernces:
 [CMS popularity](http://iopscience.iop.org/article/10.1088/1742-6596/898/9/092030/pdf)
 [CMS data-management](http://iopscience.iop.org/article/10.1088/1742-6596/513/4/042052/pdf)
+[CMSSpark](https://github.com/vkuznet/CMSSpark)
+[PySpark](https://spark.apache.org/docs/latest/api/python/index.html)
 

@@ -18,3 +18,8 @@ So far we feed data into CERN MONIT system with the following dashboards:
 ### Tasks:
 In this project we'll follow the following
 [tasks](https://docs.google.com/document/d/1XDkFkoPBvlKtb_jrQffWW-Qb16YpffsvIzNHyeh1dbw/edit)
+
+### Refernces:
+[CMS popularity](http://iopscience.iop.org/article/10.1088/1742-6596/898/9/092030/pdf)
+[CMS data-management](http://iopscience.iop.org/article/10.1088/1742-6596/513/4/042052/pdf)
+

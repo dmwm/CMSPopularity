@@ -1,27 +1,51 @@
 #!/bin/bash
 
-datadir=/afs/cern.ch/work/c/cvuosalo/popularity/
-wkdir=/tmp/cvuosalo/popularity
+# Required arguments
+# $1 -- Name of Phedex CSV file with these fields
+# site,dataset,rdate,gid,min_date,max_date,ave_size,max_size,days
+# $2 -- Directory containing dataset*.csv files with these fields
+# dataset,user,ExitCode,Type,TaskType,sum_evts,sum_chr,date,rate,tier
+
+wkdir=/tmp/$USER/popularity
+mkdir -p $wkdir
+
 # 1. Get datasets and their sizes
 # Fields 2, 7, and 6 are dataset name, average size, and end date of its presence
-awk -F , '{print $2 "," $7 "," $6}' $datadir/ecomjobdata/phedex.csv | grep -v 'dataset,ave' | sort -t , -k 1,1 -u >> $wkdir/dsandsz$$.txt
+awk -F , '{print $2 "," $7 "," $6}' "$1" | grep -v 'dataset,ave' | sort -t , -k 1,1 -u >> $wkdir/dsandsz$$.txt
+
 # 2. Get daily accesses for each dataset
-for jobdtfile in $datadir/ecomjobdata/dataset-201*.csv ; do
+for jobdtfile in "$2"/dataset*.csv ; do
 	# Fields 1 and 8 are dataset name and access date
 	grep -v 'dataset,user,ExitCode,' $jobdtfile | awk -F , '{print $1 "," $8}' | grep -v 'null,' | sort >> $wkdir/dsuses$$.txt
 done
+
 # 3. Add up uses/day for each DS
-awk -F , -f addup_uses.awk $wkdir/dsuses$$.txt |  sort -t , -k1,1 >> $wkdir/sumdsuses$$.txt
+awk -F , -f sumDailyUses.awk $wkdir/dsuses$$.txt |  sort -t , -k1,1 > $wkdir/sumdsuses$$.txt
+# sumdsuses$$.txt fields are dataset name, access date, and number of accesses for that date
+
 # 4. Join uses and sizes
-join -t , -j 1 $wkdir/dsandsz$$.txt $wkdir/sumdsuses$$.txt >> $wkdir/sumusesz$$.txt
+join -t , -j 1 $wkdir/dsandsz$$.txt $wkdir/sumdsuses$$.txt > $wkdir/sumusesz$$.txt
+# sumusesz$$.txt fields are dataset name, size, dummy date, access date, and number of accesses for that date
+
 # 5. Create two subset files by date
 # Field 4 is the access date
-awk -F , '{if ($4 > 20171108) {print $0}}' $wkdir/sumusesz$$.txt  >> $wkdir/uses1month$$.txt
-awk -F , '{if ($4 > 20170908) {print $0}}' $wkdir/sumusesz$$.txt  >> $wkdir/uses3month$$.txt
+awk -F , '{if ($4 > 20171108) {print $0}}' $wkdir/sumusesz$$.txt  > $wkdir/dayuses1month$$.txt
+awk -F , '{if ($4 > 20170908) {print $0}}' $wkdir/sumusesz$$.txt  > $wkdir/dayuses3month$$.txt
+# Uses files fields are dataset name, size, dummy date, access date, and number of accesses for that date
+
+# 6. Sum up all daily uses for each dataset
+awk -F , -f sumAllUses.awk $wkdir/sumusesz$$.txt > $wkdir/usesfullperiod$$.txt
+awk -F , -f sumAllUses.awk $wkdir/dayuses1month$$.txt > $wkdir/uses1month$$.txt
+awk -F , -f sumAllUses.awk $wkdir/dayuses3month$$.txt > $wkdir/uses3months$$.txt
+# Fields are dataset name, size, number of accesses for period
+
 # 6. Get list of unused datasets
-join -t , -j 1 -v 1 $wkdir/dsandsz$$.txt $wkdir/sumdsuses$$.txt >> $wkdir/unusedDS$$.txt
+join -t , -j 1 -v 1 $wkdir/dsandsz$$.txt $wkdir/sumdsuses$$.txt > $wkdir/unusedDS$$.txt
+# unusedDS$$.txt fields are dataset name, size, date of last presence
+
 # 7. Get the total size of unused datasets
 unusedtot=`awk -F , '{ if ($3 > 20170615) {sum = sum + $2}} END{print sum}' $wkdir/unusedDS$$.txt`
 echo Unused total `expr $unusedtot / 1024 / 1024 / 1024` GB
+
 # 8. Add entry for unused datasets to uses file
-echo "not_used,$unusedtot,20170616,20170616,0" >> $wkdir/sumusesz$$.txt
+echo "not_used,$unusedtot,0" >> $wkdir/usesfullperiod$$.txt

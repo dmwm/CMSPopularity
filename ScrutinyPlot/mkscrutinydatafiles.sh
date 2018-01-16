@@ -39,13 +39,20 @@ awk -F , -f sumAllUses.awk $wkdir/dayuses1month$$.txt > $wkdir/uses1month$$.txt
 awk -F , -f sumAllUses.awk $wkdir/dayuses3month$$.txt > $wkdir/uses3months$$.txt
 # Fields are dataset name, size, number of accesses for period
 
+
 # 6. Get list of unused datasets
-join -t , -j 1 -v 1 $wkdir/dsandsz$$.txt $wkdir/sumdsuses$$.txt > $wkdir/unusedDS$$.txt
-# unusedDS$$.txt fields are dataset name, size, date of last presence
-
 # 7. Get the total size of unused datasets
-unusedtot=`awk -F , '{ if ($3 > 20170615) {sum = sum + $2}} END{print sum}' $wkdir/unusedDS$$.txt`
-echo Unused total `expr $unusedtot / 1024 / 1024 / 1024` GB
+function getUnused {  # $1 is earliest date for dataset, $2 is uses file for period
+	join -t , -j 1 -v 1 $wkdir/dsandsz$$.txt $2 > $wkdir/unusedDS$1$$.txt
+	# unusedDS$$.txt fields are dataset name, size, date of last presence
 
-# 8. Add entry for unused datasets to uses file
-echo "not_used,$unusedtot,0" >> $wkdir/usesfullperiod$$.txt
+	unusedtot=`awk -F , -v begindate=$1 '{ if ($3 > begindate) {sum = sum + $2}} END{print sum}' $wkdir/unusedDS$1$$.txt`
+	echo Unused total `expr $unusedtot / 1024 / 1024 / 1024` GB
+
+	# 8. Add entry for unused datasets to uses file
+	echo "not_used,$unusedtot,0" >> $2
+}
+
+getUnused 20171108 $wkdir/uses1month$$.txt
+getUnused 20170908 $wkdir/uses3months$$.txt
+getUnused 20170615 $wkdir/usesfullperiod$$.txt

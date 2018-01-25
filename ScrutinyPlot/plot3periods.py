@@ -20,15 +20,15 @@ def FillHisto(filnum, histo):
       if len(dsSize) > 0 and len(entries[2]) > 0 :
         numUses = int(entries[2])
         szinpb = float(dsSize) / 1024.0 / 1024.0 / 1024.0 / 1024.0 / 1024.0
-        if numUses > (numBins - 1) :
-          numUses = (numBins - 1)
+        if numUses > (numBins - 2) :
+          numUses = (numBins - 2)
         histo.Fill(float(numUses), szinpb)
 
 
-numBins = 16
-scrutplot1 = ROOT.TH1F ("scrutiny1", "Dataset Usage for June 16 - December 9, 2017", numBins, 0.0, float(numBins))
-scrutplot2 = ROOT.TH1F ("scrutiny2", "", numBins, 0.0, float(numBins))
-scrutplot3 = ROOT.TH1F ("scrutiny3", "", numBins, 0.0, float(numBins))
+numBins = 17
+scrutplot1 = ROOT.TH1F ("scrutiny1", "Dataset Usage for June 16 - December 9, 2017", numBins, -1.0, float(numBins - 1))
+scrutplot2 = ROOT.TH1F ("scrutiny2", "", numBins, -1.0, float(numBins - 1))
+scrutplot3 = ROOT.TH1F ("scrutiny3", "", numBins, -1.0, float(numBins - 1))
 scrutplot1.SetStats(0)
 scrutplot2.SetStats(0)
 scrutplot3.SetStats(0)
@@ -38,9 +38,10 @@ FillHisto(3, scrutplot3)
 scrutplot1.GetXaxis().SetTitle("Number of Accesses");
 scrutplot1.GetYaxis().SetTitle("Aggregated Data Size [PB]");
 scrutplot1.SetNdivisions(numBins, "X")
-for binNum in range(1, numBins + 1) :
-  binNumStr = str(binNum - 1)
-  scrutplot1.GetXaxis().SetBinLabel(binNum, binNumStr);
+for binNum in range(0, numBins - 2) :
+  binNumStr = str(binNum)
+  scrutplot1.GetXaxis().SetBinLabel(binNum + 2, binNumStr);
+scrutplot1.GetXaxis().SetBinLabel(1, "0-old");
 scrutplot1.GetXaxis().SetBinLabel(numBins, ">14");
 c1 = ROOT.TCanvas()
 gStyle.SetHistFillColor(49)

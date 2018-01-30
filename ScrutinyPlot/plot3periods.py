@@ -16,13 +16,18 @@ def FillHisto(filnum, histo):
     for inline in infile :
       entries = inline.split(",")
       # print entries
-      dsSize = entries[1]
-      if len(dsSize) > 0 and len(entries[2]) > 0 :
-        numUses = int(entries[2])
+      dsSize = entries[2]
+      if len(dsSize) > 0 and len(entries[1]) > 0 :
+        numUses = int(entries[1])
         szinpb = float(dsSize) / 1024.0 / 1024.0 / 1024.0 / 1024.0 / 1024.0
         if numUses > (numBins - 2) :
           numUses = (numBins - 2)
-        histo.Fill(float(numUses), szinpb)
+	# factor = numUses
+	# if factor <= 0.0:
+	  # factor = 1.0
+	# else :
+	  # numUses = numUses + 0.9999
+        binNum = histo.Fill(numUses, szinpb)
 
 
 numBins = 17
@@ -35,6 +40,8 @@ scrutplot3.SetStats(0)
 FillHisto(1, scrutplot1)
 FillHisto(2, scrutplot2)
 FillHisto(3, scrutplot3)
+# for binNum in range(0, numBins ) :
+  # print "bin ", binNum, ", plot 3", scrutplot3.GetBinContent(binNum), "| ",
 scrutplot1.GetXaxis().SetTitle("Number of Accesses");
 scrutplot1.GetYaxis().SetTitle("Aggregated Data Size [PB]");
 scrutplot1.SetNdivisions(numBins, "X")

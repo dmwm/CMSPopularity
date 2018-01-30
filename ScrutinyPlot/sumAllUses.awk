@@ -1,4 +1,4 @@
 BEGIN {ds = "start"}
-{if (ds != "start" && ds != $1) {print ds "," sz "," cnt; cnt = 0}}
-{ds = $1; sz = $2; cnt = cnt + $6}
-END {print ds "," sz "," cnt}
+{if (ds != "start" && ds != $1) {print ds "," cnt "," sumbytes; cnt = 0; sumbytes = 0}}
+{ds = $1; cnt = cnt + $2; sumbytes = sumbytes + $3}
+END {print ds "," cnt "," sumbytes}

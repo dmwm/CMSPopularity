@@ -31,7 +31,7 @@ def FillHisto(filnum, histo):
 
 
 numBins = 17
-scrutplot1 = ROOT.TH1F ("scrutiny1", "Dataset Usage for June 16 - December 9, 2017", numBins, -1.0, float(numBins - 1))
+scrutplot1 = ROOT.TH1F ("scrutiny1", "Dataset Usage for January 1 - December 31, 2017", numBins, -1.0, float(numBins - 1))
 scrutplot2 = ROOT.TH1F ("scrutiny2", "", numBins, -1.0, float(numBins - 1))
 scrutplot3 = ROOT.TH1F ("scrutiny3", "", numBins, -1.0, float(numBins - 1))
 scrutplot1.SetStats(0)
@@ -67,8 +67,8 @@ scrutplot2.Draw("hist b same")
 scrutplot3.Draw("hist b same")
 legend = ROOT.TLegend(0.4, 0.6, 0.7, 0.9)
 legend.SetHeader("Dataset Accesses over Period","C")
-legend.AddEntry(scrutplot3, "Last 1 month", "f")
-legend.AddEntry(scrutplot2, "Last 3 months", "f")
+legend.AddEntry(scrutplot3, "Last 3 months", "f")
+legend.AddEntry(scrutplot2, "Last 6 months", "f")
 legend.AddEntry(scrutplot1, "Full period", "f")
 legend.Draw()
 c1.Print ("scrutlinear.png")

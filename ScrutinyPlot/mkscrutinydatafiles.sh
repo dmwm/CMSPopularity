@@ -8,25 +8,44 @@
 # $3 -- Directory containing jobUse*.csv files with these fields
 # dataset,user,ExitCode,Type,TaskType,rec_time,sum_evts,sum_chr,date,rate,tier
 
+# Set these values
+
+# Beginning of date range
 begindtrng=20170625
+
+# End of date range
 enddtrng=20180620
+
+# Mid-point of date range (6-month point if full year range)
 middt=20171220
+
+# Last portion of date range (3 months to the end for full year range)
 lastfracdt=20180320
+
 
 wkdir=/tmp/$USER/popularity
 mkdir -p $wkdir
 
+if [ $# -ne 3 ] || [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ]; then
+    echo "Usage: mkscrutinydatafiles.sh <phedex csv> <dbs csv> <directory with jobUse*.csv files>"
+		exit 0
+fi
+
+phedexcsv=$1
+dbscsv=$2
+jobsdir=$3
+
 # 1. Get datasets and their sizes, but only for T1 and T2 sites
 # Fields 2, 7, 3, and 6 are dataset name, average size, replica date and end date of its presence
-awk -F , '$1 ~ /T1.*/ || $1 ~ /T2.*/ {if ($7 > 0) {print $2 "," $7 "," $3 "," $6}}' "$1" | grep -v -e 'dataset,ave' -e RelVal | sort -t , -k 1,1 -k 3,3 -k 4,4 > $wkdir/dsandsz$$.txt
+awk -F , '$1 ~ /T1.*/ || $1 ~ /T2.*/ {if ($7 > 0) {print $2 "," $7 "," $3 "," $6}}' "$phedexcsv" | grep -v -e 'dataset,ave' -e RelVal | sort -t , -k 1,1 -k 3,3 -k 4,4 > $wkdir/dsandsz$$.txt
 python calcDSSizes.py $wkdir/dsandsz$$.txt $lastfracdt $middt $begindtrng $enddtrng > $wkdir/dsSzLif$$.txt
-awk -F , '{print $1 "," $4}' $2 | sed 's/"//g' | sort -t , -k1,1 > $wkdir/dsEvts$$.txt
+awk -F , '{print $1 "," $4}' "$dbscsv" | sed 's/"//g' | sort -t , -k1,1 > $wkdir/dsEvts$$.txt
 # dsEvts has dataset and number of events
 join -t , -j 1 $wkdir/dsSzLif$$.txt $wkdir/dsEvts$$.txt > $wkdir/dsSzDur$$.txt
 # dsSzDur has dataset, size3month, size6month, size12month, begin date, end date, and number of events
 
 # 2. Get daily accesses for each dataset
-for jobdtfile in "$3"/jobUse*.csv ; do
+for jobdtfile in "$jobsdir"/jobUse*.csv ; do
 	# Fields 1 and 7 are dataset name and kilo events used. Access date is not reliable -- use file name
 	accdate=`echo $jobdtfile | sed 's/.*jobUse\(.*\)\..*/\1/'`
 	grep -v 'dataset,user,ExitCode,' $jobdtfile | awk -F , -v accdate=$accdate '{if ($7 != "null" && $7 > 0) {print $1 "," accdate "," $7 * 1000}}' | sed 's/"//g' | grep -v 'null' | sort -t , -k1,1 >> $wkdir/dsuses$$.txt

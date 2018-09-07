@@ -37,10 +37,12 @@ def FillHisto(filnum, histo):
   return sumpb
 
 
+ext = 'png' if len(sys.argv) == 4 else sys.argv[4]
+title = 'Dataset usage' if len(sys.argv) == 5 else sys.argv[5]
 numBins = 17
-scrutplot1 = ROOT.TH1F ("scrutiny1", "Dataset Usage for January 1 - December 31, 2017", numBins, -1.0, float(numBins - 1))
+scrutplot1 = ROOT.TH1F ("scrutiny1", title, numBins, -1.0, float(numBins - 1))
 scrutplot2 = ROOT.TH1F ("scrutiny2", "", numBins, -1.0, float(numBins - 1))
-scrutplot3 = ROOT.TH1F ("scrutiny3", "Dataset Usage for January 1 - December 31, 2017", numBins, -1.0, float(numBins - 1))
+scrutplot3 = ROOT.TH1F ("scrutiny3", title, numBins, -1.0, float(numBins - 1))
 scrutplot1.SetStats(0)
 scrutplot2.SetStats(0)
 scrutplot3.SetStats(0)
@@ -79,10 +81,10 @@ legend.AddEntry(scrutplot3, legstr3, "f")
 legend.AddEntry(scrutplot2, legstr2, "f")
 legend.AddEntry(scrutplot1, legstr1, "f")
 legend.Draw()
-c1.Print("scrutlinear.png")
+c1.Print("scrutlinear.%s" % ext)
 c1.SetLogy()
 scrutplot3.Draw("hist b")
 scrutplot2.Draw("hist b same")
 scrutplot1.Draw("hist b same")
 legend.Draw()
-c1.Print("scrutlog.png")
+c1.Print("scrutlog.%s" % ext)

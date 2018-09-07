@@ -50,7 +50,7 @@ startDate3mon = int(sys.argv[2])
 startDate6mon = int(sys.argv[3])
 startDate12mon = int(sys.argv[4])
 endDate = int(sys.argv[5])
-beginLife = 20190101
+beginLife = 21190101
 endLife = 20100101
 prevds = "start"
 dsHist3mon = []
@@ -63,7 +63,7 @@ with open(sys.argv[1], "r") as infile :
   ds = entries[0]
   if ds != prevds and prevds != "start" :
    calcAndPrint(startDate3mon, startDate6mon, startDate12mon, endDate, endLife, dsHist3mon, dsHist6mon, dsHist12mon)
-   beginLife = 20190101
+   beginLife = 21190101
    endLife = 20100101
    dsHist3mon = []
    dsHist6mon = []

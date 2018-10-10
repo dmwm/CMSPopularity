@@ -31,8 +31,9 @@ echo "DBS-Condor input: $dbsCondorInput"
 echo "Output area     : $odir"
 echo "intervals       : $intervals"
 echo "Title           : $title"
+
 $cmd $phedexInput $dbsInput $dbsCondorInput
-python plot3periods.py $odir/usesfullperiod.txt $odir/uses6month.txt $odir/uses3months.txt $iformat $title
+python plot3periods.py $odir/usesfullperiod.txt $odir/uses6month.txt $odir/uses3months.txt $iformat "$title"
 
 end_time="$(date -u +%s)"
 

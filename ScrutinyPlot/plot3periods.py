@@ -39,9 +39,10 @@ def FillHisto(filnum, histo):
 
 ext = 'png' if len(sys.argv) == 4 else sys.argv[4]
 title = 'Dataset usage' if len(sys.argv) == 5 else sys.argv[5]
+print("Use '%s' title in plots" % title)
 numBins = 17
 scrutplot1 = ROOT.TH1F ("scrutiny1", title, numBins, -1.0, float(numBins - 1))
-scrutplot2 = ROOT.TH1F ("scrutiny2", "", numBins, -1.0, float(numBins - 1))
+scrutplot2 = ROOT.TH1F ("scrutiny2", title, numBins, -1.0, float(numBins - 1))
 scrutplot3 = ROOT.TH1F ("scrutiny3", title, numBins, -1.0, float(numBins - 1))
 scrutplot1.SetStats(0)
 scrutplot2.SetStats(0)

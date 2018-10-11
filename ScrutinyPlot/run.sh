@@ -1,17 +1,28 @@
 #!/bin/bash
+# setup local environment
+if [ -f $PWD/setup.sh ]; then
+    source setup.sh
+fi
+
+# command to use
 cmd=$PWD/mkscrutinydatafiles.sh
 
 # location of our data
-baseDir=/wma/vk/Monitoring/pop-data
+baseDir=/data/cms/pop-data
+
 # location of phedex input dataframe, can be either in csv or csv.gz data-format
 phedexInput=$baseDir/2017/data/phedex_20170101_20180131.csv
+
 # location of dbs events input dataframe, can be either in csv or csv.gz data-format
 dbsInput=$baseDir/dbs_df.csv.gz
+
 #dbsInput=$baseDir/2017/data/dbs_events.csv
 # location of dbs_condor datasets, underlying files may be either in csv or csv.gz data-format
 dbsCondorInput=$baseDir/dbs_condor
+
 # title to apply to out plots
 title="T1/T2 Dataset Usage for 2017-2018"
+
 # generate image with format, supported png or pdf
 iformat=pdf
 

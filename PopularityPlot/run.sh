@@ -1,11 +1,7 @@
 #!/bin/bash
 
 odir=$PWD/output
-# vocms0181
-#phedexInput=/wma/vk/Monitoring/pop-data/2017/data/phedex_20170101_20180131.csv
-#dbsInput=/wma/vk/Monitoring/pop-data/dbs_df.csv.gz
-#baseDir=/wma/vk/Monitoring/pop-data/2017/data
-# vocms092 (cmspopdb)
+# cmspopdb nod settings
 phedexInput=/data/cms/pop-data/phedex.csv.gz
 dbsInput=/data/cms/pop-data/dbs_events.csv.gz
 baseDir=/data/cms/pop-data/dbs_condor

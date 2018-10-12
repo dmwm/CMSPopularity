@@ -11,12 +11,11 @@ cmd=$PWD/mkscrutinydatafiles.sh
 baseDir=/data/cms/pop-data
 
 # location of phedex input dataframe, can be either in csv or csv.gz data-format
-phedexInput=$baseDir/2017/data/phedex_20170101_20180131.csv
+phedexInput=$baseDir/phedex.csv.gz
 
 # location of dbs events input dataframe, can be either in csv or csv.gz data-format
-dbsInput=$baseDir/dbs_df.csv.gz
+dbsInput=$baseDir/dbs_events.csv.gz
 
-#dbsInput=$baseDir/2017/data/dbs_events.csv
 # location of dbs_condor datasets, underlying files may be either in csv or csv.gz data-format
 dbsCondorInput=$baseDir/dbs_condor
 

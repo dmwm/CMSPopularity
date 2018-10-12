@@ -1,5 +1,32 @@
 These scripts create a scrutiny plot from DBS, Phedex, and job monitoring data.
 
+### Automated procedure
+To generate CMS popularity scrutiny plots please adjust `run.sh` script and run
+it. In particular it defines the following:
+```
+# common area on where to locate the data
+baseDir=/data/cms/pop-data
+
+# location of phedex input dataframe, can be either in csv or csv.gz data-format
+phedexInput=$baseDir/phedex.csv.gz
+
+# location of dbs events input dataframe, can be either in csv or csv.gz data-format
+dbsInput=$baseDir/dbs_events.csv.gz
+
+# location of dbs_condor datasets, underlying files may be either in csv or csv.gz data-format
+dbsCondorInput=$baseDir/dbs_condor
+```
+Once `run.sh` is completed it will produce two plots: `scrutlog.pdf` and
+`scrutlinear.pdf`
+
+##### Dependencies
+The code depends on the following packages:
+- numpy
+- ROOT (python ROOT package)
+- DataFormats.FWLite (from CMSSW stack)
+Please see and adjust `setup.sh` file accordingly.
+
+### Manual steps to create plots
 An example of such data can be found here:
 
 /afs/cern.ch/work/c/cvuosalo/popularity/dataFromCron

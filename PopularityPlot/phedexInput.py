@@ -134,8 +134,8 @@ def readSizes():
         for keyInfo in keyInfos:
             site=keyInfo[0]
             #skip things that are not T1 or T2
-            if 'T1' not in site and 'T2' not in site:
-                continue #no T3 no T0
+            if not site.startswith("T1") and not site.startswith("T2"):
+                continue #no T3 no T0 or other crap
 
             #get the detailed phedex information for this replica
             phKey=(dataset,)+keyInfo

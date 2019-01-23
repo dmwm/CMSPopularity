@@ -2,12 +2,14 @@
 
 odir=$PWD/output
 # cmspopdb nod settings
-phedexInput=/data/cms/pop-data/phedex.csv.gz
+phedexInput=/data/cms/pop-data/phedex2018.csv.gz
 dbsInput=/data/cms/pop-data/dbs_events.csv.gz
 baseDir=/data/cms/pop-data/dbs_condor
 classAdsInput=$baseDir
 intervalDates="20171001,20170701,20170101"
 intervalEnd=20180131
+intervalDates="20180901,20180301,20171001"
+intervalEnd=20181031
 
 date=`date +%Y%m%d`
 start_time="$(date -u +%s)"

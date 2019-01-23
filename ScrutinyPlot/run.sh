@@ -11,7 +11,7 @@ cmd=$PWD/mkscrutinydatafiles.sh
 baseDir=/data/cms/pop-data
 
 # location of phedex input dataframe, can be either in csv or csv.gz data-format
-phedexInput=$baseDir/phedex.csv.gz
+phedexInput=$baseDir/phedex2018.csv.gz
 
 # location of dbs events input dataframe, can be either in csv or csv.gz data-format
 dbsInput=$baseDir/dbs_events.csv.gz
@@ -20,7 +20,7 @@ dbsInput=$baseDir/dbs_events.csv.gz
 dbsCondorInput=$baseDir/dbs_condor
 
 # title to apply to out plots
-title="T1/T2 Dataset Usage for 2017-2018"
+title="T1/T2 Dataset Usage for 2018-2019"
 
 # generate image with format, supported png or pdf
 iformat=pdf
@@ -30,7 +30,11 @@ iformat=pdf
 #odir=/tmp/valya/popularity
 odir=`grep ^wkdir mkscrutinydatafiles.sh | awk '{split($1,a,"="); print a[2]}' | sed -s "s,\\$USER,$USER,g"`
 rm -rf $odir
-intervals=`egrep "^begindtrng|^enddtrng|^middt|^lastfracdt" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
+#intervals=`egrep "^begindtrng|^enddtrng|^middt|^lastfracdt" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
+begindate=`egrep "^begindtrng" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
+enddate=`egrep "^enddtrng" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
+middate=`egrep "^middt" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
+lastdate=`egrep "^lastfracdt" $cmd | awk '{split($1,a,"="); print a[2]}' | sort | awk '{ORS=" "; print $0}'`
 date=`date +%Y%m%d`
 start_time="$(date -u +%s)"
 
@@ -39,7 +43,10 @@ echo "Phedex     input: $phedexInput"
 echo "DBS        input: $dbsInput"
 echo "DBS-Condor input: $dbsCondorInput"
 echo "Output area     : $odir"
-echo "intervals       : $intervals"
+echo "begindate       : $begindate"
+echo "enddate         : $enddate"
+echo "middate         : $middate"
+echo "lastdate        : $lastdate"
 echo "Title           : $title"
 
 $cmd $phedexInput $dbsInput $dbsCondorInput

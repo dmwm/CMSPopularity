@@ -14,16 +14,20 @@
 # Set these values
 
 # Beginning of date range
-begindtrng=20170101
+#begindtrng=20170101
+begindtrng=20171001
 
 # End of date range
-enddtrng=20180131
+#enddtrng=20180131
+enddtrng=20181031
 
 # Mid-point of date range (6-month point if full year range)
-middt=20170701
+#middt=20170701
+middt=20170301
 
 # Last portion of date range (3 months to the end for full year range)
-lastfracdt=20171001
+#lastfracdt=20171001
+lastfracdt=20180901
 
 wkdir=/tmp/$USER/popularity
 mkdir -p $wkdir

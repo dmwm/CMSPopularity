@@ -38,7 +38,6 @@ loadClassAds = False
 loadPopDB = False
 
 # a label to apply to all plots
-runLabel = "_classadsTest"
 isTest = False
 iformat = 'pdf'
 
@@ -59,6 +58,8 @@ dataTypes= ['All','AOD','AODSIM','MINIAOD','MINIAODSIM',
             'GENSIM','GEN','LHE','USER',
             'FEVT','PREMIXRAW','RAWAODSIM','DQMIO',
             'GENSIMRECODEBUG','GENRAW','RAWRECO']
+
+use_only_tier2=False
 
 ### DO NOT EDIT BELOW THIS LINE
 
@@ -105,6 +106,8 @@ class OptionParser():
             dest="divideByNCopies", default=False, help="Divide #datasets access by avg number of copies")
         self.parser.add_argument("--iformat", action="store",
             dest="iformat", default=iformat, help="Image format, default png")
+        self.parser.add_argument("--useOnlyTier2", action="store_true",
+            dest="use_only_tier2", default=False, help="Phedex data only on tier-2 rather than tier-1+tier-2, default False")
 
 def loadOptions():
     "Load all options"

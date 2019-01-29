@@ -10,7 +10,7 @@ import numpy
 #{"phedex":{"request_timestamp":1513095921.57439,"instance":"prod","request_url":"http://cmsweb.cern.ch:7001/phedex/datasvc/json/prod/groups","request_version":"2.4.0pre1","group":[{"name":"AnalysisOps","id":"42"},{"name":"B2G","id":"163"},{"name":"DataOps","id":"18"},{"name":"FacOps","id":"19"},{"name":"IB RelVal","id":"106"},{"name":"RelVal","id":"107"},{"name":"SMP","id":"162"},{"name":"b-physics","id":"8"},{"name":"b-tagging","id":"5"},{"name":"caf-alca","id":"102"},{"name":"caf-comm","id":"103"},{"name":"caf-lumi","id":"164"},{"name":"caf-phys","id":"104"},{"name":"deprecated-ewk","id":"2"},{"name":"deprecated-qcd","id":"16"},{"name":"deprecated-undefined","id":"142"},{"name":"dqm","id":"122"},{"name":"e-gamma_ecal","id":"4"},{"name":"exotica","id":"15"},{"name":"express","id":"108"},{"name":"forward","id":"17"},{"name":"heavy-ions","id":"10"},{"name":"higgs","id":"6"},{"name":"jets-met_hcal","id":"9"},{"name":"local","id":"22"},{"name":"muon","id":"3"},{"name":"susy","id":"12"},{"name":"tau-pflow","id":"13"},{"name":"top","id":"7"},{"name":"tracker-dpg","id":"14"},{"name":"tracker-pog","id":"82"},{"name":"trigger","id":"11"},{"name":"upgrade","id":"105"}],"request_call":"groups","call_time":0.00231,"request_date":"2017-12-12 16:25:21 UTC"}}
 
 # local modules
-from inputs import isTest, testDS, phedexDataFile
+from inputs import isTest, testDS, phedexDataFile, use_only_tier2
 from utils import dStartOldest, dEnd, nDays, getDate, fopen, object_size
 
 def isAll(keyInfo):
@@ -135,7 +135,9 @@ def readSizes():
             site=keyInfo[0]
             #skip things that are not T1 or T2
             if not site.startswith("T1") and not site.startswith("T2"):
-                continue #no T3 no T0 or other crap
+                continue 
+            if not use_only_tier2 and not site.startswith("T2"):
+                continue 
 
             #get the detailed phedex information for this replica
             phKey=(dataset,)+keyInfo

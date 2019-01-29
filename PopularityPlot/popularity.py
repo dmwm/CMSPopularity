@@ -147,7 +147,7 @@ def plots(phedexInfo, dbsInfo, classadsInfo, iformat):
 
     for cat in dataCategories:#range(3):
         figNum = \
-            plotter.plotPopularity(sumsDict[cat], cbs_keys, "PopDBCrab", cat+runLabel, figNum, iformat)
+            plotter.plotPopularity(sumsDict[cat], cbs_keys, popularitySource, cat+'_'+popularitySource, figNum, iformat)
 
 
 def main():

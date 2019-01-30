@@ -141,7 +141,6 @@ def plots(phedexInfo, dbsInfo, classadsInfo, iformat):
 
     #plot everything
     import plotter
-    from inputs import runLabel
 
     figNum=0
 

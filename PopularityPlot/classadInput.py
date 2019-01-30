@@ -60,9 +60,16 @@ def saveClassAds(dbsInfo):
                         ts = long(sp[5])
                     except:
                         continue
-                    if ts > 15180904520: #its in milliseconds!
+                    if ts > 25180904520: #its in milliseconds!
                         ts = long(ts/1000)
-                    dVal = datetime.datetime.fromtimestamp(ts).date()#getDate(sp[8])
+                    #there are also bogus timestamps - some are easy to recover
+                    while ts > 25180904520: 
+			ts = long(ts/1000)   
+                    try:
+                        dVal = datetime.datetime.fromtimestamp(ts).date()#getDate(sp[8])
+                    except ValueError:
+                        print 'skipping bad timestamp',ts,line
+                        continue 
                     dataset = sp[0]
                     if "/DQMIO" in dataset:
                         continue #there are no events...

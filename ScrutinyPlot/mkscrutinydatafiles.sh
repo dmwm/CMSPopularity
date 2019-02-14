@@ -79,7 +79,7 @@ for jobdtfile in "$jobsdir"/*.csv ; do
 #    accdate=`echo $jobdtfile | sed 's/.*jobUse\(.*\)\..*/\1/'`
     # we require that jobdtfile name had a YYYYMMDD timestamp in its name, e.g.
     # dataset-YYYYMMDD.csv
-    accdate=`echo $jobdtfile | awk '{split($0,a,"[.-]"); print a[2]}'`
+    accdate=`basename $jobdtfile | awk '{split($0,a,"[.-]"); print a[2]}'`
 	grep -v 'dataset,user,ExitCode,' $jobdtfile | awk -F , -v accdate=$accdate '{if ($7 != "null" && $7 > 0) {print $1 "," accdate "," $7 * 1000}}' | sed 's/"//g' | grep -v 'null' | sort -t , -k1,1 >> $wkdir/dsuses.txt
 done
 
